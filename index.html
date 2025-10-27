@@ -117,29 +117,52 @@
       window.safeCheck = function(){ console.log('This function is safe and does not reveal the flag.'); };
     })();
 
-    // ===== FLAG SUBMIT SCRIPT =====
+    // ===== SECURE-FEELING FLAG SUBMIT (no plaintext flag in source) =====
     (function(){
-      // exact flag required (as requested)
-      const CORRECT_FLAG = 'Naz{d0nt_st3eAl_My_r0bux}';
+      // STORED_HASH is the SHA-256 hex digest of the correct flag.
+      // NOTE: this is one-way; the plaintext flag is NOT included in the page.
+      // Replace this digest if you change the canonical flag (see note below).
+      const STORED_HASH = 'a633a0ce68a3678d169b034105f52db34dbb51c471ba8594ab985b909f53ed1b';
 
       const input = document.getElementById('flagInput');
       const btn = document.getElementById('flagSubmit');
       const msg = document.getElementById('flagMsg');
+
+      function hexFromBuffer(buffer){
+        const bytes = new Uint8Array(buffer);
+        return Array.from(bytes).map(b => b.toString(16).padStart(2,'0')).join('');
+      }
+
+      async function sha256Hex(text){
+        const data = new TextEncoder().encode(text);
+        const digest = await crypto.subtle.digest('SHA-256', data);
+        return hexFromBuffer(digest);
+      }
 
       function show(text, ok){
         msg.textContent = text;
         msg.style.color = ok ? '#8ef5b1' : '#ff9aa2';
       }
 
-      btn.addEventListener('click', function(){
+      btn.addEventListener('click', async function(){
         const val = input.value.trim();
-        if(val === CORRECT_FLAG){
-          show('Correct flag!', true);
-          // disable to avoid accidental reveal by repeated checks
-          btn.disabled = true;
-          input.disabled = true;
-        } else {
-          show('Incorrect — try again.', false);
+        if(!val){
+          show('Please enter a flag.', false);
+          return;
+        }
+
+        try{
+          const h = await sha256Hex(val);
+          if(h === STORED_HASH){
+            show('Correct flag!', true);
+            btn.disabled = true;
+            input.disabled = true;
+          } else {
+            show('Incorrect — try again.', false);
+          }
+        }catch(e){
+          console.error(e);
+          show('Error validating flag.', false);
         }
       });
 
@@ -147,6 +170,7 @@
       input.addEventListener('keydown', function(e){
         if(e.key === 'Enter') btn.click();
       });
+
     })();
   </script>
 </body>
