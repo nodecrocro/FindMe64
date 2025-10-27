@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Open CTF — Hidden Flag (Harder)</title>
+  <title> Meow Meow Meow Meow </title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="description" content="CTF practice: find the hidden flag (category: open, difficulty: medium -> harder)">
 
@@ -12,14 +12,15 @@
     .wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:3rem}
     .card{width:900px;max-width:95%;background:linear-gradient(180deg,var(--card),#071428);border-radius:12px;padding:28px;box-shadow:0 10px 30px rgba(2,6,23,0.7);border:1px solid rgba(255,255,255,0.03)}
 
+   
     .easter::after{
-     
-      content: "\5a\44\4e\75\58\32\6c\75\58\33"; 
+      /
+      content: "\63\33\51\7A\5A\55\46\73\58\30\31\35"; 
       display:block;opacity:0;font-size:0.75rem;pointer-events:none;user-select:none
     }
     .stealth::before{
-    
-      content: "\4d\77\64\58\4a\6a\4d\33\30\3d";
+     
+      content: "\58\33\49\77\59\6E\56\34\66\51\3D\3D"; 
       display:block;opacity:0;pointer-events:none;user-select:none
     }
 
@@ -35,14 +36,14 @@
 <body>
   <div class="wrap">
     <div class="card">
-      <h1>Open CTF — Find the Hidden Flag (Harder)</h1>
+      <h1>Find Nazran Hidden Code</h1>
       <p class="lead">Category: <strong>open</strong> — Difficulty: <strong>medium (hardened)</strong></p>
 
       <div class="columns">
         <div class="col">
           <div class="hint">
             <strong>Challenge</strong>
-            <p class="small">A flag is hidden somewhere in the page resources (HTML/CSS/SVG). It is encoded and split into pieces. You need to find all pieces and decode them. We made the pieces intentionally harder to find — good luck.</p>
+            <p class="small">We found out that nazran secretly hiding a hidden message in his website about his robux location. Can you help us finding the hidden message?</p>
           </div>
 
           <div style="margin-top:12px" class="console" id="console">
@@ -54,16 +55,6 @@
           </div>
         </div>
 
-        <div class="col">
-          <div class="hint">
-            <strong>How to proceed</strong>
-            <ol class="small" style="margin:8px 0 0;padding-left:18px">
-              <li>Open Developer Tools (F12) or View → Page Source.</li>
-              <li>Search for suspicious comments, pseudo-elements, SVG text, and hex/escaped sequences.</li>
-              <li>Collect fragments, reverse or clean them where needed, concatenate, then base64-decode (e.g., `atob()` in the browser console).</li>
-            </ol>
-          </div>
-
           <div style="margin-top:12px" class="hint">
             <strong>Extra</strong>
             <p class="small">This page intentionally scatters the pieces: one is reversed inside a comment, another is in hex-escaped CSS content split across two selectors, and one is tucked inside an SVG description with a tiny junk char to remove. Inspect raw source carefully.</p>
@@ -72,21 +63,21 @@
       </div>
 
       <div class="footer">
-        <span>Author: CTF Trainer</span> — <span>Good luck!</span>
+        <span>Author: Nazware</span> — <span>Good luck!</span>
       </div>
 
       <!--
-        partA my cat keep playing my laptop!: kFDaf1WdxQ2Mtt3RBxkR
+        partA reversed: fRnbwQ2e6FmT
       -->
 
-    
+ 
       <span class="easter" style="position:absolute; left:-9999px; top:-9999px;">.</span>
       <span class="stealth" style="position:absolute; left:-9999px; top:-9999px;">.</span>
 
       
       <svg class="svg-decoy" xmlns="http://www.w3.org/2000/svg" width="1" height="1" aria-hidden="true">
-        <desc>ZDNuX2luX3MwdXJjM3!0=</desc>
-     
+        <desc>X3Iw!YnV4fQ==</desc>
+       
       </svg>
 
     </div>
@@ -114,4 +105,3 @@
   </script>
 </body>
 </html>
-
