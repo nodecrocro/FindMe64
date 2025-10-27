@@ -2,41 +2,32 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Open CTF — Hidden Flag (Medium)</title>
+  <title>Open CTF — Hidden Flag (Harder)</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="CTF practice: find the hidden flag (category: open, difficulty: medium)">
+  <meta name="description" content="CTF practice: find the hidden flag (category: open, difficulty: medium -> harder)">
 
   <style>
-    /* --- Visual layout --- */
-    :root{
-      --accent: #2b6cb0;
-      --bg: #0f172a;
-      --card: #0b1220;
-      --glass: rgba(255,255,255,0.03);
-    }
+    :root{--accent:#2b6cb0;--bg:#0f172a;--card:#0b1220;--glass:rgba(255,255,255,0.03)}
     html,body{height:100%;margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:linear-gradient(180deg,var(--bg) 0%, #071024 100%);color:#e6eef8}
     .wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:3rem}
     .card{width:900px;max-width:95%;background:linear-gradient(180deg,var(--card),#071428);border-radius:12px;padding:28px;box-shadow:0 10px 30px rgba(2,6,23,0.7);border:1px solid rgba(255,255,255,0.03)}
-    h1{margin:0 0 8px;font-size:1.6rem}
-    p.lead{margin:0 0 14px;color:#b6c8e6}
-    .columns{display:flex;gap:18px}
-    .col{flex:1}
-    .hint{background:var(--glass);padding:14px;border-radius:8px;color:#cbdff9}
-    .footer{margin-top:18px;font-size:0.9rem;color:#98aed6}
 
-    /* --- hidden easter-flag (part 2 stored in CSS content) --- */
-    /* The next line contains a chunk of the encoded flag in a pseudo element.
-       It's intentionally not visible (opacity:0) —inspect the styles or the stylesheet to find it. */
+    /* --- hidden easter-flag (part stored in CSS pseudo-element; hex-escaped and split) --- */
+    /* Part B is split into two pseudo-elements to force searching multiple selectors. Each uses CSS hex escapes (\HH) instead of plain text. */
     .easter::after{
-      content: "ZDNuX2luX3MwdXJjM30="; /* -> part 2 of the base64 string (hidden in CSS) */
-      display: block;
-      font-size: 0.75rem;
-      opacity: 0; /* invisible in page layout */
-      pointer-events: none;
-      user-select: none;
+      /* first half of the base64 (hex escaped) */
+      content: "\5a\44\4e\75\58\32\6c\75\58\33"; /* -> hex for 'ZDNuX2luX3' */
+      display:block;opacity:0;font-size:0.75rem;pointer-events:none;user-select:none
+    }
+    .stealth::before{
+      /* second half of the base64 (hex escaped) */
+      content: "\4d\77\64\58\4a\6a\4d\33\30\3d"; /* -> hex for 'MwdXJjM30=' */
+      display:block;opacity:0;pointer-events:none;user-select:none
     }
 
-    /* small interactive console we provide to test decoding (it does NOT reveal the flag) */
+    /* additional decoy: invisible SVG element with a tiny obfuscation (one harmless junk char) */
+    .svg-decoy{position:absolute;left:-9999px;top:-9999px}
+
     .console{background:#071326;border-radius:8px;padding:10px;margin-top:12px;color:#d7eef9;font-family:monospace;min-height:80px}
     .decode-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:6px;color:var(--accent);cursor:pointer}
     .decode-btn:hover{background:rgba(255,255,255,0.02)}
@@ -46,18 +37,14 @@
 <body>
   <div class="wrap">
     <div class="card">
-      <h1>Open CTF — Find the Hidden Flag</h1>
-      <p class="lead">Category: <strong>open</strong> — Difficulty: <strong>medium</strong></p>
+      <h1>Open CTF — Find the Hidden Flag (Harder)</h1>
+      <p class="lead">Category: <strong>open</strong> — Difficulty: <strong>medium (hardened)</strong></p>
 
       <div class="columns">
         <div class="col">
           <div class="hint">
             <strong>Challenge</strong>
-            <p class="small">A flag is hidden somewhere in the page resources (HTML/CSS). It is encoded and split into pieces. You need to find both pieces and decode them.</p>
-            <ul class="small" style="margin:8px 0 0;padding-left:18px">
-              <li>Searching the page visible text won't show the flag directly — inspect the source and styles.</li>
-              <li>Look for encoded strings (base64-like characters) and pieces that fit together.</li>
-            </ul>
+            <p class="small">A flag is hidden somewhere in the page resources (HTML/CSS/SVG). It is encoded and split into pieces. You need to find all pieces and decode them. We made the pieces intentionally harder to find — good luck.</p>
           </div>
 
           <div style="margin-top:12px" class="console" id="console">
@@ -73,15 +60,15 @@
           <div class="hint">
             <strong>How to proceed</strong>
             <ol class="small" style="margin:8px 0 0;padding-left:18px">
-              <li>Open Developer Tools (F12) or View &rarr; Page Source.</li>
-              <li>Search for Base64-looking strings (letters A–Z a–z 0–9 + / = ).</li>
-              <li>Find two pieces, concatenate them (partA + partB) and base64-decode them (e.g., `atob()` in the browser console).</li>
+              <li>Open Developer Tools (F12) or View → Page Source.</li>
+              <li>Search for suspicious comments, pseudo-elements, SVG text, and hex/escaped sequences.</li>
+              <li>Collect fragments, reverse or clean them where needed, concatenate, then base64-decode (e.g., `atob()` in the browser console).</li>
             </ol>
           </div>
 
           <div style="margin-top:12px" class="hint">
             <strong>Extra</strong>
-            <p class="small">This page includes a hidden span with a class for fun — it helps with the story but not necessary. Try searching comments and CSS pseudo-elements.</p>
+            <p class="small">This page intentionally scatters the pieces: one is reversed inside a comment, another is in hex-escaped CSS content split across two selectors, and one is tucked inside an SVG description with a tiny junk char to remove. Inspect raw source carefully.</p>
           </div>
         </div>
       </div>
@@ -91,21 +78,24 @@
       </div>
 
       <!--
-        PART A OF THE ENCODED FLAG (hidden in HTML comment):
-        Note: find this comment via "View Page Source" or inspector -> node -> comments.
-        The encoded string is base64 but split; combine with the CSS part.
-
-        Part A (do not reveal to others): RkxBR3ttM2QxdW1faDFk
+        PART A (obfuscated): reversed string. To recover, reverse this string.
+        partA reversed: kFDaf1WdxQ2Mtt3RBxkR
       -->
 
-      <!-- invisible helper element containing the easter pseudo-element -->
-      <span class="easter" style="position: absolute; left: -9999px; top: -9999px;"></span>
+      <!-- invisible helper elements containing the pseudo-elements and decoy -->
+      <span class="easter" style="position:absolute; left:-9999px; top:-9999px;">.</span>
+      <span class="stealth" style="position:absolute; left:-9999px; top:-9999px;">.</span>
+
+      <!-- Decoy SVG with a small junk char inserted (remove the '!' when reconstructing) -->
+      <svg class="svg-decoy" xmlns="http://www.w3.org/2000/svg" width="1" height="1" aria-hidden="true">
+        <desc>ZDNuX2luX3MwdXJjM3!0=</desc>
+        <!-- note: the desc above contains a slightly mangled chunk; remove the '!' char to get a correct piece -->
+      </svg>
+
     </div>
   </div>
 
   <script>
-    // Reason: small interactive script gives hints only, it does not reveal or decode the flag.
-    // It demonstrates safe CTF challenge design: the flag must be found by inspecting sources and decoding manually.
     (function(){
       const hintBtn = document.getElementById('hintBtn');
       const hintArea = document.getElementById('hintArea');
@@ -114,18 +104,15 @@
       hintBtn.addEventListener('click', function(){
         hintsGiven++;
         if(hintsGiven === 1){
-          hintArea.textContent = "Hint 1: Check page source comments for unusual alphanumeric strings.";
+          hintArea.textContent = "Hint 1: Check page source comments for reversed-looking alphanumeric strings.";
         } else if (hintsGiven === 2){
-          hintArea.textContent = "Hint 2: Look in CSS pseudo-elements (e.g. ::after) for more base64-like text.";
+          hintArea.textContent = "Hint 2: Inspect computed styles (getComputedStyle(..., '::after')). CSS content may be hex-escaped (\\hh).";
         } else {
-          hintArea.textContent = "Hint 3: Concatenate the two parts you find, then use a base64 decoder (browser console: atob('...')).";
+          hintArea.textContent = "Hint 3: Combine fragments in order: (reverse-partA) + (CSS-hex-frag-1) + (CSS-hex-frag-2) + (SVG-frag-without-junk), then base64-decode with atob().";
         }
       });
 
-      // A tiny no-op function to demonstrate the page is interactive (does nothing with the flag).
-      window.safeCheck = function(){
-        console.log('This function is safe and does not reveal the flag.');
-      };
+      window.safeCheck = function(){ console.log('This function is safe and does not reveal the flag.'); };
     })();
   </script>
 </body>
