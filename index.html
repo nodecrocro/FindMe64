@@ -12,20 +12,18 @@
     .wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:3rem}
     .card{width:900px;max-width:95%;background:linear-gradient(180deg,var(--card),#071428);border-radius:12px;padding:28px;box-shadow:0 10px 30px rgba(2,6,23,0.7);border:1px solid rgba(255,255,255,0.03)}
 
-    /* --- hidden easter-flag (part stored in CSS pseudo-element; hex-escaped and split) --- */
-    /* Part B is split into two pseudo-elements to force searching multiple selectors. Each uses CSS hex escapes (\HH) instead of plain text. */
     .easter::after{
-      /* first half of the base64 (hex escaped) */
-      content: "\5a\44\4e\75\58\32\6c\75\58\33"; /* -> hex for 'ZDNuX2luX3' */
+     
+      content: "\5a\44\4e\75\58\32\6c\75\58\33"; 
       display:block;opacity:0;font-size:0.75rem;pointer-events:none;user-select:none
     }
     .stealth::before{
-      /* second half of the base64 (hex escaped) */
-      content: "\4d\77\64\58\4a\6a\4d\33\30\3d"; /* -> hex for 'MwdXJjM30=' */
+    
+      content: "\4d\77\64\58\4a\6a\4d\33\30\3d";
       display:block;opacity:0;pointer-events:none;user-select:none
     }
 
-    /* additional decoy: invisible SVG element with a tiny obfuscation (one harmless junk char) */
+    
     .svg-decoy{position:absolute;left:-9999px;top:-9999px}
 
     .console{background:#071326;border-radius:8px;padding:10px;margin-top:12px;color:#d7eef9;font-family:monospace;min-height:80px}
@@ -78,18 +76,17 @@
       </div>
 
       <!--
-        PART A (obfuscated): reversed string. To recover, reverse this string.
-        partA reversed: kFDaf1WdxQ2Mtt3RBxkR
+        partA my cat keep playing my laptop!: kFDaf1WdxQ2Mtt3RBxkR
       -->
 
-      <!-- invisible helper elements containing the pseudo-elements and decoy -->
+    
       <span class="easter" style="position:absolute; left:-9999px; top:-9999px;">.</span>
       <span class="stealth" style="position:absolute; left:-9999px; top:-9999px;">.</span>
 
-      <!-- Decoy SVG with a small junk char inserted (remove the '!' when reconstructing) -->
+      
       <svg class="svg-decoy" xmlns="http://www.w3.org/2000/svg" width="1" height="1" aria-hidden="true">
         <desc>ZDNuX2luX3MwdXJjM3!0=</desc>
-        <!-- note: the desc above contains a slightly mangled chunk; remove the '!' char to get a correct piece -->
+     
       </svg>
 
     </div>
@@ -117,3 +114,4 @@
   </script>
 </body>
 </html>
+
