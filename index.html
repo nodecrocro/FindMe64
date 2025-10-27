@@ -12,7 +12,12 @@
     .wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:3rem}
     .card{width:900px;max-width:95%;background:linear-gradient(180deg,var(--card),#071428);border-radius:12px;padding:28px;box-shadow:0 10px 30px rgba(2,6,23,0.7);border:1px solid rgba(255,255,255,0.03)}
 
-   
+    /* small submit styles */
+    .flag-row{margin-top:16px;display:flex;gap:8px;align-items:center}
+    .flag-input{flex:1;padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit;font-family:inherit}
+    .flag-btn{padding:8px 12px;border-radius:6px;border:0;background:var(--accent);color:#07203a;font-weight:600;cursor:pointer}
+    .flag-msg{margin-top:10px;font-size:0.95rem}
+
     .easter::after{
       /
       content: "\63\33\51\7A\5A\55\46\73\58\30\31\35"; 
@@ -53,6 +58,15 @@
             </div>
             <div id="hintArea" class="small" style="margin-top:8px;color:#bcd7ff"></div>
           </div>
+
+          <!-- FLAG SUBMIT UI: added here so it appears inside the card -->
+          <div class="flag-row" aria-label="flag-submit">
+            <input id="flagInput" class="flag-input" type="text" placeholder="Enter flag here (FLAG{...})" autocomplete="off" />
+            <button id="flagSubmit" class="flag-btn">Submit</button>
+          </div>
+          <div id="flagMsg" class="flag-msg" aria-live="polite"></div>
+          <!-- end submit UI -->
+
         </div>
 
           <div style="margin-top:12px" class="hint">
@@ -102,7 +116,38 @@
 
       window.safeCheck = function(){ console.log('This function is safe and does not reveal the flag.'); };
     })();
+
+    // ===== FLAG SUBMIT SCRIPT =====
+    (function(){
+      // exact flag required (as requested)
+      const CORRECT_FLAG = 'Naz{d0nt_st3eAl_My_r0bux}';
+
+      const input = document.getElementById('flagInput');
+      const btn = document.getElementById('flagSubmit');
+      const msg = document.getElementById('flagMsg');
+
+      function show(text, ok){
+        msg.textContent = text;
+        msg.style.color = ok ? '#8ef5b1' : '#ff9aa2';
+      }
+
+      btn.addEventListener('click', function(){
+        const val = input.value.trim();
+        if(val === CORRECT_FLAG){
+          show('Correct flag!', true);
+          // disable to avoid accidental reveal by repeated checks
+          btn.disabled = true;
+          input.disabled = true;
+        } else {
+          show('Incorrect — try again.', false);
+        }
+      });
+
+      // allow Enter key to submit
+      input.addEventListener('keydown', function(e){
+        if(e.key === 'Enter') btn.click();
+      });
+    })();
   </script>
 </body>
 </html>
-
